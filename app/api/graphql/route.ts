@@ -1,11 +1,25 @@
-import { ApolloServer, gql } from "apollo-server-micro";
+import { ApolloServer } from "@apollo/server";
+import { startServerAndCreateNextHandler } from "@as-integrations/next";
+import { gql } from "apollo-server-core";
 import data from "../../db";
 
 // Definir el esquema de GraphQL
 const typeDefs = gql`
+  type Specifications {
+    brand: String
+    itemWeight: String
+    itemModelNumber: String
+    dimensions: String
+    colour: String
+  }
+
   type Content {
     text: String
+    vatios: String
     imageUrl: String
+    precie: String
+    description: String
+    specifications: Specifications
   }
 
   type Query {
@@ -21,25 +35,11 @@ const resolvers = {
 };
 
 // Crear el servidor Apollo
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
 
-const startServer = apolloServer.start();
-
-export default async function handler(req, res) {
-  try {
-    await startServer;
-    await apolloServer.createHandler({
-      path: "/api/graphql",
-    })(req, res);
-  } catch (error) {
-    console.error("Error en el servidor Apollo:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-}
-
-// Desactivar bodyParser ya que Apollo lo gestiona
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// Exportar el manejador de Next.js usando Apollo
+export const GET = startServerAndCreateNextHandler(apolloServer);
+export const POST = startServerAndCreateNextHandler(apolloServer);
