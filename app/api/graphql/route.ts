@@ -14,7 +14,7 @@ const typeDefs = gql`
   }
 
   type Content {
-    text: String
+    title: String
     vatios: String
     imageUrl: String
     precie: String

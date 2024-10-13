@@ -1,6 +1,6 @@
 const data = [
   {
-    text: "Energy saving light bulb",
+    title: "Energy saving light bulb",
     imageUrl: "https://static.octopuscdn.com/constantine/constantine.svg",
     vatios: "25W // Packet of 4",
     precie: "£12.99",
